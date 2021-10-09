@@ -19,7 +19,10 @@ namespace SneakingOut
 		private bool isGameOver;
 		private bool isPaused;
 		private bool isPlaying;
-		private bool isWall;
+		private bool isRightWall;
+		private bool isLeftWall;
+		private bool isTopWall;
+		private bool isDownWall;
 		private bool sec1isVertical;
 		private bool sec2isVertical;
 
@@ -35,23 +38,48 @@ namespace SneakingOut
 		#region gameTime
 		private void mainTimer(object sender, EventArgs e)
 		{
-			if (goleft && isWall == false)
+
+			// a billentyu lenyomasa alapjan hogyan mozogjon a jatekos
+			if (goleft && isLeftWall == false)
 			{
 				player.Left -= PlayerStep;
 			}
-			if (goright == true && isWall == false)
+			if (goright == true && isRightWall == false)
 			{
 				player.Left += PlayerStep;
 			}
-			if (godown == true && isWall == false)
+			if (godown == true && isDownWall == false)
 			{
 				player.Top += PlayerStep;
 			}
-			if (goup == true && isWall == false)
+			if (goup == true && isTopWall == false)
 			{
 				player.Top -= PlayerStep;
 			}
 
+			if (sec1isVertical) // alapjaraton ha vizszintesen mozog
+			{
+				security1.Left += Security1Step;
+			}
+			if (!sec1isVertical) // ha hamis a vizszintes akk fuggolegesen mozogjon
+			{
+				security1.Top += Security1Step;
+			}
+
+			if (sec2isVertical)
+			{
+				security2.Left += Security2Step;
+			}
+			if (!sec2isVertical)
+			{
+				security2.Top += Security2Step;
+			}
+
+			//a falak visszaallitas alaphelyzetbe
+			isRightWall = false;
+			isLeftWall = false;
+			isDownWall = false;
+			isTopWall = false;
 
 			foreach (Control x in this.Controls)
 			{
@@ -62,13 +90,25 @@ namespace SneakingOut
 					{
 						if (player.Bounds.IntersectsWith(x.Bounds))
 						{
-							isWall = true;
+							if (goleft)
+							{
+								isLeftWall = true;
+	}
+							if (goright)
+							{
+								isRightWall = true;
+							}
+							if (godown)
+							{
+								isDownWall = true;
+							}
+							if (goup)
+							{
+								isTopWall = true;
+							}
+							
 						}
-						else
-						{
-							isWall = false;
-						}
-
+						// or1 iranyitasa
 						if (security1.Bounds.IntersectsWith(x.Bounds))
 						{
 							Random rand = new Random();
@@ -99,6 +139,7 @@ namespace SneakingOut
 								security1.Left -= Security1Step;
 							}
 						}
+						// a or2 iranyitasa
 						if (security2.Bounds.IntersectsWith(x.Bounds))
 						{
 							Random rand = new Random();
@@ -134,16 +175,27 @@ namespace SneakingOut
 						{
 							if (player.Bounds.IntersectsWith(x.Bounds))
 							{
-								gameOver("You lose");
+								gameOver("You lose.");
 							}
+						}
+					}
+				}
+
+				if (x is Label)
+				{
+					if ((string)x.Name == "exit")
+					{
+						if (player.Bounds.IntersectsWith(x.Bounds))
+						{
+							gameOver("Congratulations! You sneaked out!");
 						}
 					}
 				}
 			}
 
-			security1.Left += Security1Step;
-			security2.Top -= Security2Step;
+			
 
+			//ha kimennenek a palyarol forduljanak vissza
 			if (security1.Top < 24 || security1.Top > 562 ||security1.Left < 0 || security1.Left > 584)
 			{
 				Security1Step = -Security1Step;
@@ -156,7 +208,7 @@ namespace SneakingOut
 		}
 			#endregion
 
-			#region private Components
+		#region private Components
 
 			/// <summary>
 			/// ha a nyil billentyu le van nyomva ezt tegye
@@ -220,7 +272,10 @@ namespace SneakingOut
 				isGameOver = false;
 				isPaused = false;
 				isPlaying = true;
-				isWall = false;
+				isRightWall = false;
+				isLeftWall = false;
+				isDownWall = false;
+				isTopWall = false;
 				sec1isVertical = true;
 				sec2isVertical = false;
 
@@ -228,9 +283,11 @@ namespace SneakingOut
 				security1.Top = 386;
 				security2.Left = 167;
 				security2.Top = 27;
+				firstLine.Left = 120;
 
 				player.Left = 1;
 				player.Top = 535;
+
 
 
 				foreach (Control x in this.Controls)
@@ -243,11 +300,14 @@ namespace SneakingOut
 
 				foreach (Control x in this.Controls)
 				{
-					if (x is TextBox)
+					if (x is Label)
 					{
 						x.Visible = false;
 					}
 				}
+
+				exit.Visible = true;
+				
 
 				GameTimer.Start();
 			}
@@ -297,7 +357,7 @@ namespace SneakingOut
 					isPaused = true;
 					GameTimer.Stop();
 
-					firstLine.Text = "" + Environment.NewLine + "The game is paused. Click pause to continue!";
+					firstLine.Text = "" + Environment.NewLine + "The game is paused.\n Click pause to continue!";
 					firstLine.Visible = true;
 
 					foreach (Control x in this.Controls)
@@ -342,8 +402,6 @@ namespace SneakingOut
 
 			#endregion
 
-			#region public Methods
-			#endregion
 
 	}
 }
