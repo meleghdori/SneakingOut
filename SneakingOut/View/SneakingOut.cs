@@ -134,8 +134,19 @@ namespace SneakingOut
 						{
 							if (player.Bounds.IntersectsWith(x.Bounds))
 							{
-								gameOver("You lose");
+								gameOver("You lose.");
 							}
+						}
+					}
+				}
+
+				if (x is Label)
+				{
+					if ((string)x.Name == "exit")
+					{
+						if (player.Bounds.IntersectsWith(x.Bounds))
+						{
+							gameOver("Congratulations! You sneaked out!");
 						}
 					}
 				}
@@ -144,6 +155,7 @@ namespace SneakingOut
 			security1.Left += Security1Step;
 			security2.Top -= Security2Step;
 
+			//ha kimennenek a palyarol forduljanak vissza
 			if (security1.Top < 24 || security1.Top > 562 ||security1.Left < 0 || security1.Left > 584)
 			{
 				Security1Step = -Security1Step;
@@ -228,9 +240,11 @@ namespace SneakingOut
 				security1.Top = 386;
 				security2.Left = 167;
 				security2.Top = 27;
+				firstLine.Left = 120;
 
 				player.Left = 1;
 				player.Top = 535;
+
 
 
 				foreach (Control x in this.Controls)
@@ -243,11 +257,13 @@ namespace SneakingOut
 
 				foreach (Control x in this.Controls)
 				{
-					if (x is TextBox)
+					if (x is Label)
 					{
 						x.Visible = false;
 					}
 				}
+
+				exit.Visible = true;
 
 				GameTimer.Start();
 			}
@@ -271,6 +287,7 @@ namespace SneakingOut
 				}
 
 				firstLine.Text = "" + Environment.NewLine + message;
+				firstLine.Left = 180; // az uzenet legyen kozepen
 				firstLine.Visible = true;
 			}
 
@@ -297,7 +314,7 @@ namespace SneakingOut
 					isPaused = true;
 					GameTimer.Stop();
 
-					firstLine.Text = "" + Environment.NewLine + "The game is paused. Click pause to continue!";
+					firstLine.Text = "" + Environment.NewLine + "The game is paused.\n Click pause to continue!";
 					firstLine.Visible = true;
 
 					foreach (Control x in this.Controls)

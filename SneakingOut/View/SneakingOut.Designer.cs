@@ -49,8 +49,8 @@ namespace SneakingOut
 			this.player = new System.Windows.Forms.PictureBox();
 			this.security1 = new System.Windows.Forms.PictureBox();
 			this.security2 = new System.Windows.Forms.PictureBox();
-			this.infos = new System.Windows.Forms.TextBox();
-			this.firstLine = new System.Windows.Forms.TextBox();
+			this.infos = new System.Windows.Forms.Label();
+			this.firstLine = new System.Windows.Forms.Label();
 			this.game.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -234,32 +234,27 @@ namespace SneakingOut
 			// 
 			// infos
 			// 
-			this.infos.BackColor = System.Drawing.Color.Black;
-			this.infos.BorderStyle = System.Windows.Forms.BorderStyle.None;
-			this.infos.Font = new System.Drawing.Font("Courier New", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+			this.infos.AutoSize = true;
+			this.infos.Font = new System.Drawing.Font("Courier New", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
 			this.infos.ForeColor = System.Drawing.Color.White;
-			this.infos.Location = new System.Drawing.Point(120, 223);
-			this.infos.Multiline = true;
+			this.infos.Location = new System.Drawing.Point(100, 220);
 			this.infos.Name = "infos";
-			this.infos.ReadOnly = true;
-			this.infos.Size = new System.Drawing.Size(373, 223);
-			this.infos.TabIndex = 11;
+			this.infos.Size = new System.Drawing.Size(448, 180);
+			this.infos.TabIndex = 13;
 			this.infos.Text = resources.GetString("infos.Text");
-			this.infos.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.infos.TextAlign = System.Drawing.ContentAlignment.TopCenter;
 			// 
 			// firstLine
 			// 
-			this.firstLine.BackColor = System.Drawing.Color.Black;
-			this.firstLine.BorderStyle = System.Windows.Forms.BorderStyle.None;
+			this.firstLine.AutoSize = true;
 			this.firstLine.Font = new System.Drawing.Font("Courier New", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
 			this.firstLine.ForeColor = System.Drawing.Color.White;
-			this.firstLine.Location = new System.Drawing.Point(1, 162);
+			this.firstLine.Location = new System.Drawing.Point(120, 160);
 			this.firstLine.Name = "firstLine";
-			this.firstLine.ReadOnly = true;
-			this.firstLine.Size = new System.Drawing.Size(633, 24);
-			this.firstLine.TabIndex = 12;
+			this.firstLine.Size = new System.Drawing.Size(400, 23);
+			this.firstLine.TabIndex = 14;
 			this.firstLine.Text = "Welcome to Sneak Out the game!";
-			this.firstLine.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+			this.firstLine.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
 			// 
 			// SneakingOut
 			// 
@@ -319,8 +314,8 @@ namespace SneakingOut
 		private System.Windows.Forms.PictureBox player;
 		private System.Windows.Forms.PictureBox security1;
 		private System.Windows.Forms.PictureBox security2;
-		private System.Windows.Forms.TextBox infos;
-		private System.Windows.Forms.TextBox firstLine;
+		private System.Windows.Forms.Label infos;
+		private System.Windows.Forms.Label firstLine;
 	}
 }
 
