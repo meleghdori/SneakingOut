@@ -193,7 +193,8 @@ namespace SneakingOut
 				}
 			}
 
-			
+			security1.Left += Security1Step;
+			security2.Top -= Security2Step;
 
 			//ha kimennenek a palyarol forduljanak vissza
 			if (security1.Top < 24 || security1.Top > 562 ||security1.Left < 0 || security1.Left > 584)
@@ -307,7 +308,6 @@ namespace SneakingOut
 				}
 
 				exit.Visible = true;
-				
 
 				GameTimer.Start();
 			}
@@ -331,6 +331,7 @@ namespace SneakingOut
 				}
 
 				firstLine.Text = "" + Environment.NewLine + message;
+				firstLine.Left = 180; // az uzenet legyen kozepen
 				firstLine.Visible = true;
 			}
 
