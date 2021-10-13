@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 namespace SneakingOut
 {
+	//exit megcsinalasa, a falon ne lasson at a range
 	public partial class SneakingOut : Form
 	{
 		#region private types
@@ -24,6 +25,14 @@ namespace SneakingOut
 		private bool isLeftWall;
 		private bool isTopWall;
 		private bool isDownWall;
+		private bool isRange1RightWall;
+		private bool isRange1LeftWall;
+		private bool isRange1TopWall;
+		private bool isRange1DownWall;
+		private bool isRange2RightWall;
+		private bool isRange2LeftWall;
+		private bool isRange2TopWall;
+		private bool isRange2DownWall;
 		private bool sec1isVertical;
 		private bool sec2isVertical;
 
@@ -39,6 +48,15 @@ namespace SneakingOut
 		public SneakingOut()
 		{
 			InitializeComponent();
+			//Optimalization
+			this.SetStyle(ControlStyles.UserPaint, true);
+			//2. Enable double buffer.
+			this.SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
+			//3. Ignore a windows erase message to reduce flicker.
+			this.SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+
+			SetStyle(ControlStyles.ResizeRedraw, true);
+			SetStyle(ControlStyles.OptimizedDoubleBuffer, true);
 		}
 
 		#region gameTime
@@ -123,6 +141,14 @@ namespace SneakingOut
 				isLeftWall = false;
 				isDownWall = false;
 				isTopWall = false;
+				isRange1RightWall = false;
+				isRange1LeftWall = false;
+				isRange1DownWall = false;
+				isRange1TopWall = false;
+				isRange2RightWall = false;
+				isRange2LeftWall = false;
+				isRange2DownWall = false;
+				isRange2TopWall = false;
 				sec1isVertical = true;
 				sec2isVertical = false;
 
@@ -365,6 +391,59 @@ namespace SneakingOut
 					{
 						SetWalls();
 					}
+					//melyik iranyba vannak a falak a rangnel
+					if (security1range.Bounds.IntersectsWith(x.Bounds))
+					{
+						if (security1range.Left > x.Left  )
+						{
+							isRange1LeftWall = true;
+						}
+						if (security1range.Left < x.Left)
+						{
+							isRange1RightWall = true;
+						}
+						if (security1range.Top > x.Top)
+						{
+							isRange1DownWall = true;
+						}
+						if (security1range.Top < x.Top)
+						{
+							isRange1TopWall = true;
+						}
+					}
+					else
+					{
+						isRange1RightWall = false;
+						isRange1LeftWall = false;
+						isRange1DownWall = false;
+						isRange1TopWall = false;
+					}
+					if (security2range.Bounds.IntersectsWith(x.Bounds))
+					{
+						if (security2range.Left > x.Left)
+						{
+							isRange2LeftWall = true;
+						}
+						if (security2range.Left < x.Left)
+						{
+							isRange2RightWall = true;
+						}
+						if (security2range.Top > x.Top)
+						{
+							isRange2DownWall = true;
+						}
+						if (security2range.Top < x.Top)
+						{
+							isRange2TopWall = true;
+						}
+					}
+					else
+					{
+						isRange2RightWall = false;
+						isRange2LeftWall = false;
+						isRange2DownWall = false;
+						isRange2TopWall = false;
+					}
 					// or1 iranyitasa
 					if (security1.Bounds.IntersectsWith(x.Bounds) || security1.Top < 24 || security1.Top > 562 || security1.Left < 0 || security1.Left > 584)
 					{
@@ -437,18 +516,27 @@ namespace SneakingOut
 				}
 			}
 		}
+
 		/// <summary>
 		/// a securityvel valo erintkezes
 		/// </summary>
 		/// <param name="x"></param>
 		public void InteractionSecurity(Control x)
 		{
-			if ((string)x.Tag == "security")
+			//azt kene h hogy ha securityhez er de ha fal van ott akk nem latja a jatekost a range
+			if ((string)x.Tag == "security" )
 			{
-
 				if (player.Bounds.IntersectsWith(x.Bounds))
 				{
-					GameOver("You lose.");
+					if (!isRange1RightWall) { GameOver("You lose."); }
+					if (!isRange1LeftWall) { GameOver("You lose."); }
+					if (!isRange1TopWall) { GameOver("You lose."); }
+					if (!isRange1DownWall) { GameOver("You lose."); }
+					if (!isRange2RightWall) { GameOver("You lose."); }
+					if (!isRange2LeftWall) { GameOver("You lose."); }
+					if (!isRange2TopWall) { GameOver("You lose."); }
+					if (!isRange2DownWall) { GameOver("You lose."); }
+					
 				}
 			}
 		}
