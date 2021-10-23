@@ -21,7 +21,6 @@ namespace SneakingOut.Model
 		private SneakingOutDataAccess _dataAccess; // adatelérés
 		private SneakingOutTable _table; // játéktábla
 		private Int32 _gameStepCount; // lépések száma
-		private Int32 _gameTime; // játékidő
 
 		#endregion
 
@@ -31,11 +30,6 @@ namespace SneakingOut.Model
 		/// Lépések számának lekérdezése.
 		/// </summary>
 		public Int32 GameStepCount { get { return _gameStepCount; } }
-
-		/// <summary>
-		/// Hátramaradt játékidő lekérdezése.
-		/// </summary>
-		public Int32 GameTime { get { return _gameTime; } }
 
 		/// <summary>
 		/// Játéktábla lekérdezése.
@@ -88,14 +82,6 @@ namespace SneakingOut.Model
 
 		}
 
-		/// <summary>
-		/// Játékidő léptetése.
-		/// </summary>
-		public void AdvanceTime()
-		{
-			if (IsGameOver) // ha már vége, nem folytathatjuk
-				return;
-		}
 
 		/// <summary>
 		/// Táblabeli lépés végrehajtása.
@@ -112,8 +98,6 @@ namespace SneakingOut.Model
 			_table.StepValue(x, y);
 
 			_gameStepCount++; // lépésszám növelés
-
-			OnGameAdvanced();
 
 			if (_table.isEscaped()) // ha vége a játéknak, jelezzük, hogy győztünk
 			{
@@ -150,14 +134,6 @@ namespace SneakingOut.Model
 
 		#region Private event methods
 
-		/// <summary>
-		/// Játékidő változás eseményének kiváltása.
-		/// </summary>
-		private void OnGameAdvanced()
-		{
-			if (GameAdvanced != null)
-				GameAdvanced(this, new SneakingOutEventArgs(false, _gameStepCount));
-		}
 
 		/// <summary>
 		/// Játék vége eseményének kiváltása.
