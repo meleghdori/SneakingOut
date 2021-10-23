@@ -14,5 +14,14 @@ namespace SneakingOut.Persistence
 			TablePositionX = tablePositionX;
 			TablePositionY = tablePositionY;
 		}
+
+		public Int32 getPositionX()
+		{
+			return TablePositionX;
+		}
+		public Int32 getPositionY()
+		{
+			return TablePositionY;
+		}
 	}
 }
