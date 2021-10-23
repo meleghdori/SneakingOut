@@ -53,6 +53,10 @@ namespace SneakingOut
 			this.firstLine = new System.Windows.Forms.Label();
 			this.security1 = new System.Windows.Forms.PictureBox();
 			this.security2 = new System.Windows.Forms.PictureBox();
+			this.pictureBox5 = new System.Windows.Forms.PictureBox();
+			this.pictureBox6 = new System.Windows.Forms.PictureBox();
+			this.pictureBox7 = new System.Windows.Forms.PictureBox();
+			this.pictureBox8 = new System.Windows.Forms.PictureBox();
 			this.game.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
@@ -63,6 +67,10 @@ namespace SneakingOut
 			((System.ComponentModel.ISupportInitialize)(this.security2range)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.security1)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.security2)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).BeginInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).BeginInit();
 			this.SuspendLayout();
 			// 
 			// game
@@ -204,7 +212,7 @@ namespace SneakingOut
 			// player
 			// 
 			this.player.Image = global::SneakingOut.Properties.Resources.player1;
-			this.player.Location = new System.Drawing.Point(1, 538);
+			this.player.Location = new System.Drawing.Point(41, 515);
 			this.player.Name = "player";
 			this.player.Size = new System.Drawing.Size(50, 50);
 			this.player.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -229,7 +237,7 @@ namespace SneakingOut
 			// 
 			this.security2range.BackColor = System.Drawing.Color.Transparent;
 			this.security2range.Image = global::SneakingOut.Properties.Resources.security;
-			this.security2range.Location = new System.Drawing.Point(66, -57);
+			this.security2range.Location = new System.Drawing.Point(145, 362);
 			this.security2range.Name = "security2range";
 			this.security2range.Size = new System.Drawing.Size(250, 250);
 			this.security2range.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -288,12 +296,51 @@ namespace SneakingOut
 			this.security2.Tag = "security";
 			this.security2.Visible = false;
 			// 
+			// pictureBox5
+			// 
+			this.pictureBox5.Location = new System.Drawing.Point(0, -27);
+			this.pictureBox5.Name = "pictureBox5";
+			this.pictureBox5.Size = new System.Drawing.Size(634, 50);
+			this.pictureBox5.TabIndex = 17;
+			this.pictureBox5.TabStop = false;
+			this.pictureBox5.Tag = "wall";
+			// 
+			// pictureBox6
+			// 
+			this.pictureBox6.Location = new System.Drawing.Point(640, 0);
+			this.pictureBox6.Name = "pictureBox6";
+			this.pictureBox6.Size = new System.Drawing.Size(24, 623);
+			this.pictureBox6.TabIndex = 18;
+			this.pictureBox6.TabStop = false;
+			this.pictureBox6.Tag = "wall";
+			// 
+			// pictureBox7
+			// 
+			this.pictureBox7.Location = new System.Drawing.Point(1, 611);
+			this.pictureBox7.Name = "pictureBox7";
+			this.pictureBox7.Size = new System.Drawing.Size(634, 50);
+			this.pictureBox7.TabIndex = 19;
+			this.pictureBox7.TabStop = false;
+			this.pictureBox7.Tag = "wall";
+			// 
+			// pictureBox8
+			// 
+			this.pictureBox8.Location = new System.Drawing.Point(-31, 8);
+			this.pictureBox8.Name = "pictureBox8";
+			this.pictureBox8.Size = new System.Drawing.Size(24, 623);
+			this.pictureBox8.TabIndex = 20;
+			this.pictureBox8.TabStop = false;
+			this.pictureBox8.Tag = "wall";
+			// 
 			// SneakingOut
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.BackColor = System.Drawing.Color.Black;
 			this.ClientSize = new System.Drawing.Size(634, 611);
+			this.Controls.Add(this.pictureBox8);
+			this.Controls.Add(this.pictureBox7);
+			this.Controls.Add(this.pictureBox6);
 			this.Controls.Add(this.security2);
 			this.Controls.Add(this.security1);
 			this.Controls.Add(this.firstLine);
@@ -307,6 +354,7 @@ namespace SneakingOut
 			this.Controls.Add(this.pictureBox1);
 			this.Controls.Add(this.security2range);
 			this.Controls.Add(this.security1range);
+			this.Controls.Add(this.pictureBox5);
 			this.MainMenuStrip = this.game;
 			this.MaximumSize = new System.Drawing.Size(650, 650);
 			this.MinimumSize = new System.Drawing.Size(650, 650);
@@ -325,6 +373,10 @@ namespace SneakingOut
 			((System.ComponentModel.ISupportInitialize)(this.security2range)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.security1)).EndInit();
 			((System.ComponentModel.ISupportInitialize)(this.security2)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox6)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox7)).EndInit();
+			((System.ComponentModel.ISupportInitialize)(this.pictureBox8)).EndInit();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -354,6 +406,10 @@ namespace SneakingOut
 		private System.Windows.Forms.Label firstLine;
 		private System.Windows.Forms.PictureBox security1;
 		private System.Windows.Forms.PictureBox security2;
+		private System.Windows.Forms.PictureBox pictureBox5;
+		private System.Windows.Forms.PictureBox pictureBox6;
+		private System.Windows.Forms.PictureBox pictureBox7;
+		private System.Windows.Forms.PictureBox pictureBox8;
 	}
 }
 

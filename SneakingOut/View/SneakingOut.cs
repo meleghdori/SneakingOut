@@ -445,8 +445,10 @@ namespace SneakingOut
 						isRange2TopWall = false;
 					}
 					// or1 iranyitasa
-					if (security1.Bounds.IntersectsWith(x.Bounds) || security1.Top < 24 || security1.Top > 562 || security1.Left < 0 || security1.Left > 584)
+					if (security1.Bounds.IntersectsWith(x.Bounds))
 					{
+						security1.Top -= 10;
+						security1.Left -= 10;
 						Random rand = new Random();
 						int change = rand.Next(1, 4);
 
@@ -456,31 +458,31 @@ namespace SneakingOut
 						}
 						if (change == 2 && !sec1isVertical) // ha 2 akk es vizszintetesen mozog akk most felfele
 						{
-							sec1isVertical = false;
+							sec1isVertical = true;
 							security1.Top += Security1Step;
 							security1range.Top += Security1Step;
 						}
 						else if (change == 2 && sec1isVertical) // ha 2 akk es nem vizszintetesen mozog akk most jobbra
 						{
-							sec1isVertical = true;
+							sec1isVertical = false;
 							security1.Left += Security1Step;
 							security1range.Left += Security1Step;
 						}
 						if (change == 3 && !sec1isVertical) // ha 3 akk es vizszintetesen mozog akk most lefele
 						{
-							sec1isVertical = false;
+							sec1isVertical = true;
 							security1.Top -= Security1Step;
 							security1range.Top -= Security1Step;
 						}
 						else if (change == 3 && sec1isVertical) // ha 3 akk es nem vizszintetesen mozog akk most balra
 						{
-							sec1isVertical = true;
+							sec1isVertical = false;
 							security1.Left -= Security1Step;
 							security1range.Left -= Security1Step;
 						}
 					}
 					// a or2 iranyitasa
-					if (security2.Bounds.IntersectsWith(x.Bounds) || security2.Top < 24 || security2.Top > 562 || security2.Left < 0 || security2.Left > 584)
+					if (security2.Bounds.IntersectsWith(x.Bounds))
 					{
 						Random rand = new Random();
 						int change = rand.Next(1, 4);
