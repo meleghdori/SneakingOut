@@ -50,7 +50,7 @@ namespace SneakingOut.Persistence
         /// <summary>
         /// Sudoku játéktábla példányosítása.
         /// </summary>
-        public SneakingOutTable() : this(30) { }
+        public SneakingOutTable() : this(10) { }
 
         /// <summary>
         /// Sudoku játéktábla példányosítása.
@@ -62,6 +62,7 @@ namespace SneakingOut.Persistence
             if (tableSize < 0)
                 throw new ArgumentOutOfRangeException("The table size is less than 0.", "tableSize");
             _fieldValues = new Int32[tableSize, tableSize];
+            Exit = new Int32[2];
             isEscaped = false;
 
     }
@@ -78,9 +79,9 @@ namespace SneakingOut.Persistence
         /// <returns>Igaz, ha a mező ki van töltve, egyébként hamis.</returns>
         public Boolean IsEmpty(Int32 x, Int32 y)
         {
-            if (x < 0 || x >= _fieldValues.GetLength(0))
+            if (x < 0 || x > _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
-            if (y < 0 || y >= _fieldValues.GetLength(1))
+            if (y < 0 || y > _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
             return _fieldValues[x, y] == 0;
@@ -94,9 +95,9 @@ namespace SneakingOut.Persistence
         /// <returns>A mező értéke.</returns>
         public Int32 GetValue(Int32 x, Int32 y)
         {
-            if (x < 0 || x >= _fieldValues.GetLength(0))
+            if (x < 0 || x > _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
-            if (y < 0 || y >= _fieldValues.GetLength(1))
+            if (y < 0 || y > _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
 
             return _fieldValues[x, y];
@@ -111,9 +112,9 @@ namespace SneakingOut.Persistence
         /// <param name="lockField">Zárolja-e a mezőt.</param>
         public void SetValue(Int32 x, Int32 y, Int32 value)
         {
-            if (x < 0 || x >= _fieldValues.GetLength(0))
+            if (x < 0 || x > _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
-            if (y < 0 || y >= _fieldValues.GetLength(1))
+            if (y < 0 || y > _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");
             if (value < 0 || value > 6)
                 throw new ArgumentOutOfRangeException("value", "The value is out of range.");

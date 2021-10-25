@@ -111,6 +111,18 @@ namespace SneakingOut.Model
 
 			_gameTime++;
 			OnGameAdvanced();
+			EverythingMoves();
+		}
+
+		public void EverythingMoves()
+		{
+			if (IsGameOver) // ha már vége, nem folytathatjuk
+				return;
+
+			SecurityMove(_table._securityOne, 0);
+			SecurityMove(_table._securityTwo, 3);
+
+
 		}
 
 
@@ -120,7 +132,7 @@ namespace SneakingOut.Model
 		/// <param name="sec"></param>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public void SecurityStep(Security sec, Int32 direction)
+		public void SecurityMove(Security sec, Int32 direction)
 		{
 			Random rand = new Random();
 			Int32 change = rand.Next(0, 4);
@@ -133,7 +145,7 @@ namespace SneakingOut.Model
 				}
 				else if (_table[sec.getPositionX(), sec.getPositionY() + 1] == 4 || sec.getPositionY() + 1 > 30)
 				{
-					SecurityStep(sec, change);
+					SecurityMove(sec, change);
 				}
 			}
 
@@ -145,7 +157,7 @@ namespace SneakingOut.Model
 				}
 				else if (_table[sec.getPositionX(), sec.getPositionY() - 1] == 4 || sec.getPositionY() - 1 < 0)
 				{
-					SecurityStep(sec, change);
+					SecurityMove(sec, change);
 				}
 			}
 
@@ -158,7 +170,7 @@ namespace SneakingOut.Model
 				}
 				else if (_table[sec.getPositionX() + 1, sec.getPositionY()] == 4 || sec.getPositionX() + 1 > 30)
 				{
-					SecurityStep(sec, change);
+					SecurityMove(sec, change);
 				}
 			}
 
@@ -170,7 +182,7 @@ namespace SneakingOut.Model
 				}
 				else if (_table[sec.getPositionX() - 1, sec.getPositionY()] == 4 || sec.getPositionX() - 1 < 0)
 				{
-					SecurityStep(sec, change);
+					SecurityMove(sec, change);
 				}
 			}
 		}
@@ -181,7 +193,7 @@ namespace SneakingOut.Model
 		/// <param name="player"></param>
 		/// <param name="direction"></param>
 		/// <returns></returns>
-		public void PlayerStep(Player player, Int32 direction)
+		public void PlayerMove(Player player, Int32 direction)
 		{
 
 			//if (IsGameOver) // ha már vége a játéknak, nem játszhatunk

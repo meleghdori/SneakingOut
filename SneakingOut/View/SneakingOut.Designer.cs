@@ -32,6 +32,9 @@ namespace SneakingOut
 			this._menuStrip = new System.Windows.Forms.MenuStrip();
 			this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFileNewGame = new System.Windows.Forms.ToolStripMenuItem();
+			this._menuFileLevel1 = new System.Windows.Forms.ToolStripMenuItem();
+			this._menuFileLevel2 = new System.Windows.Forms.ToolStripMenuItem();
+			this._menuFileLevel3 = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFIleRestartGame = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFileSaveGame = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFileExit = new System.Windows.Forms.ToolStripMenuItem();
@@ -42,9 +45,7 @@ namespace SneakingOut
 			this._toolLabelGameSteps = new System.Windows.Forms.ToolStripStatusLabel();
 			this._toolLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this._toolLabelGameTime = new System.Windows.Forms.ToolStripStatusLabel();
-			this._menuFileLevel1 = new System.Windows.Forms.ToolStripMenuItem();
-			this._menuFileLevel2 = new System.Windows.Forms.ToolStripMenuItem();
-			this._menuFileLevel3 = new System.Windows.Forms.ToolStripMenuItem();
+			this._menuFilePause = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuStrip.SuspendLayout();
 			this._statusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -65,7 +66,8 @@ namespace SneakingOut
             this._menuFileNewGame,
             this._menuFIleRestartGame,
             this._menuFileSaveGame,
-            this._menuFileExit});
+            this._menuFileExit,
+            this._menuFilePause});
 			this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
 			this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
 			this.fileToolStripMenuItem.Text = "File";
@@ -79,6 +81,27 @@ namespace SneakingOut
 			this._menuFileNewGame.Name = "_menuFileNewGame";
 			this._menuFileNewGame.Size = new System.Drawing.Size(180, 22);
 			this._menuFileNewGame.Text = "New Game";
+			// 
+			// _menuFileLevel1
+			// 
+			this._menuFileLevel1.Name = "_menuFileLevel1";
+			this._menuFileLevel1.Size = new System.Drawing.Size(110, 22);
+			this._menuFileLevel1.Text = "Level 1";
+			this._menuFileLevel1.Click += new System.EventHandler(this._menuFileLevel1_Click);
+			// 
+			// _menuFileLevel2
+			// 
+			this._menuFileLevel2.Name = "_menuFileLevel2";
+			this._menuFileLevel2.Size = new System.Drawing.Size(110, 22);
+			this._menuFileLevel2.Text = "Level 2";
+			this._menuFileLevel2.Click += new System.EventHandler(this._menuFileLevel2_Click);
+			// 
+			// _menuFileLevel3
+			// 
+			this._menuFileLevel3.Name = "_menuFileLevel3";
+			this._menuFileLevel3.Size = new System.Drawing.Size(110, 22);
+			this._menuFileLevel3.Text = "Level 3";
+			this._menuFileLevel3.Click += new System.EventHandler(this._menuFileLevel3_Click);
 			// 
 			// _menuFIleRestartGame
 			// 
@@ -153,26 +176,12 @@ namespace SneakingOut
 			this._toolLabelGameTime.Size = new System.Drawing.Size(43, 17);
 			this._toolLabelGameTime.Text = "0:00:00";
 			// 
-			// _menuFileLevel1
+			// _menuFilePause
 			// 
-			this._menuFileLevel1.Name = "_menuFileLevel1";
-			this._menuFileLevel1.Size = new System.Drawing.Size(180, 22);
-			this._menuFileLevel1.Text = "Level 1";
-			this._menuFileLevel1.Click += new System.EventHandler(this._menuFileLevel1_Click);
-			// 
-			// _menuFileLevel2
-			// 
-			this._menuFileLevel2.Name = "_menuFileLevel2";
-			this._menuFileLevel2.Size = new System.Drawing.Size(180, 22);
-			this._menuFileLevel2.Text = "Level 2";
-			this._menuFileLevel2.Click += new System.EventHandler(this._menuFileLevel2_Click);
-			// 
-			// _menuFileLevel3
-			// 
-			this._menuFileLevel3.Name = "_menuFileLevel3";
-			this._menuFileLevel3.Size = new System.Drawing.Size(180, 22);
-			this._menuFileLevel3.Text = "Level 3";
-			this._menuFileLevel3.Click += new System.EventHandler(this._menuFileLevel3_Click);
+			this._menuFilePause.Name = "_menuFilePause";
+			this._menuFilePause.Size = new System.Drawing.Size(180, 22);
+			this._menuFilePause.Text = "Pause";
+			this._menuFilePause.Click += new System.EventHandler(this._menuFilePause_Click);
 			// 
 			// SneakingOut
 			// 
@@ -216,6 +225,7 @@ namespace SneakingOut
 		private System.Windows.Forms.ToolStripMenuItem _menuFileLevel1;
 		private System.Windows.Forms.ToolStripMenuItem _menuFileLevel2;
 		private System.Windows.Forms.ToolStripMenuItem _menuFileLevel3;
+		private System.Windows.Forms.ToolStripMenuItem _menuFilePause;
 	}
 }
 

@@ -18,8 +18,10 @@ namespace SneakingOut
 
         private SneakingOutDataAccess _dataAccess; // adatelérés
         private SneakingOutGameModel _model; // játékmodell
-        private Button[,] _buttonGrid; // gombrács
+        private PictureBox[,] _pictureBoxField; // gombrács
         private Timer _timer; // időzítő
+        private Boolean isPaused;
+
 
         #endregion
 
@@ -55,6 +57,7 @@ namespace SneakingOut
             _timer.Interval = 1000;
             _timer.Tick += new EventHandler(Timer_Tick);
 
+
         }
 
         #endregion
@@ -76,9 +79,7 @@ namespace SneakingOut
         private void Game_GameOver(Object sender, SneakingOutEventArgs e)
         {
             _timer.Stop();
-
-            foreach (Button button in _buttonGrid) // kikapcsoljuk a gombokat
-                button.Enabled = false;
+            isPaused = true;
 
             _menuFileSaveGame.Enabled = false;
 
@@ -111,21 +112,24 @@ namespace SneakingOut
         /// <param name="e"></param>
         private void KeyIsDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Up)
+            if (!isPaused)
             {
-                _model.PlayerStep(_model.Table._player, 0);
-            }
-            if (e.KeyCode == Keys.Down)
-            {
-                _model.PlayerStep(_model.Table._player,1);
-            }
-            if (e.KeyCode == Keys.Right)
-            {
-                _model.PlayerStep(_model.Table._player, 2);
-            }
-            if (e.KeyCode == Keys.Left)
-            {
-                _model.PlayerStep(_model.Table._player, 3);
+                if (e.KeyCode == Keys.Up)
+                {
+                    _model.PlayerMove(_model.Table._player, 0);
+                }
+                if (e.KeyCode == Keys.Down)
+                {
+                    _model.PlayerMove(_model.Table._player, 1);
+                }
+                if (e.KeyCode == Keys.Right)
+                {
+                    _model.PlayerMove(_model.Table._player, 2);
+                }
+                if (e.KeyCode == Keys.Left)
+                {
+                    _model.PlayerMove(_model.Table._player, 3);
+                }
             }
         }
 
@@ -138,6 +142,7 @@ namespace SneakingOut
         /// </summary>
         private void Timer_Tick(Object sender, EventArgs e)
         {
+            if(!isPaused)
             _model.AdvanceTime(); // játék léptetése
         }
 
@@ -151,20 +156,18 @@ namespace SneakingOut
         /// </summary>
         private void GenerateTable()
         {
-            _buttonGrid = new Button[_model.Table.Size, _model.Table.Size];
+            _pictureBoxField = new PictureBox[_model.Table.Size, _model.Table.Size];
             for (Int32 i = 0; i < _model.Table.Size; i++)
                 for (Int32 j = 0; j < _model.Table.Size; j++)
                 {
-                    _buttonGrid[i, j] = new Button();
-                    _buttonGrid[i, j].Location = new Point(5 + 50 * j, 35 + 50 * i); // elhelyezkedés
-                    _buttonGrid[i, j].Size = new Size(50, 50); // méret
-                    _buttonGrid[i, j].Font = new Font(FontFamily.GenericSansSerif, 25, FontStyle.Bold); // betűtípus
-                    _buttonGrid[i, j].Enabled = false; // kikapcsolt állapot
-                    _buttonGrid[i, j].TabIndex = 100 + i * _model.Table.Size + j; // a gomb számát a TabIndex-ben tároljuk
-                    _buttonGrid[i, j].FlatStyle = FlatStyle.Flat; // lapított stípus
+                    _pictureBoxField[i, j] = new PictureBox();
+                    _pictureBoxField[i, j].Location = new Point(5 + 50 * j, 35 + 50 * i); // elhelyezkedés
+                    _pictureBoxField[i, j].Size = new Size(50, 50); // méret
+                    _pictureBoxField[i, j].Enabled = false; // kikapcsolt állapot
+                    _pictureBoxField[i, j].TabIndex = 100 + i * _model.Table.Size + j; // a gomb számát a TabIndex-ben tároljuk
+                    _pictureBoxField[i, j].BorderStyle = BorderStyle.Fixed3D; // lapított stípus
 
-                    Controls.Add(_buttonGrid[i, j]);
-                    // felvesszük az ablakra a gombot
+                    Controls.Add(_pictureBoxField[i, j]);
                 }
         }
 
@@ -173,31 +176,41 @@ namespace SneakingOut
         /// </summary>
         private void SetupTable()
         {
-            for (Int32 i = 0; i < _buttonGrid.GetLength(0); i++)
+            for (Int32 i = 0; i < _model.Table.Size; i++)
             {
-                for (Int32 j = 0; j < _buttonGrid.GetLength(1); j++)
+                for (Int32 j = 0; j < _model.Table.Size; j++)
                 {
                     if (_model.Table.GetValue(i, j) == 0)
                     {
-                        _buttonGrid[i, j].Enabled = true;
-                        _buttonGrid[i, j].BackColor = Color.Black;
+                        _pictureBoxField[i, j].Enabled = true;
+                        _pictureBoxField[i, j].BackColor = Color.Black;
                     }
                     if (_model.Table.GetValue(i, j) == 1 || _model.Table.GetValue(i, j) == 2)
                     {
-                        _buttonGrid[i, j].Enabled = true;
-                        _buttonGrid[i, j].BackColor = Color.Yellow;
+                        _pictureBoxField[i, j].Image = Properties.Resources.security;
+                        _pictureBoxField[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
+                        _pictureBoxField[i, j].BackColor = Color.Transparent;
+                        _pictureBoxField[i, j].Enabled = true;
                     }
 
                     if (_model.Table.GetValue(i, j) == 3)
                     {
-                        _buttonGrid[i, j].Enabled = true;
-                        _buttonGrid[i, j].BackColor = Color.White;
+                        _pictureBoxField[i, j].Image = Properties.Resources.player1;
+                        _pictureBoxField[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
+                        _pictureBoxField[i, j].BackColor = Color.Transparent;
                     }
 
                     if (_model.Table.GetValue(i, j) == 4)
                     {
-                        _buttonGrid[i, j].Enabled = true;
-                        _buttonGrid[i, j].BackColor = Color.Gray;
+                        _pictureBoxField[i, j].Enabled = true;
+                        _pictureBoxField[i, j].BackColor = Color.Gray;
+                    }
+
+                    if (_model.Table.GetValue(i, j) == 5)
+                    {
+                        _pictureBoxField[i, j].Image = Properties.Resources.exit;
+                        _pictureBoxField[i, j].SizeMode = PictureBoxSizeMode.StretchImage;
+                        _pictureBoxField[i, j].BackColor = Color.Transparent;
                     }
                 }
             }
@@ -266,8 +279,9 @@ namespace SneakingOut
 		{
             _model.GameLevel = GameLevel.Level1;
 
-            Boolean restartTimer = _timer.Enabled;
-            _timer.Stop();
+            GenerateTable();
+            _model.NewGame();
+
 
             try
             {
@@ -285,12 +299,10 @@ namespace SneakingOut
 
             _menuFileSaveGame.Enabled = true;
 
-            GenerateTable();
-            _model.NewGame();
+           
             SetupTable();
 
-            if (restartTimer)
-                _timer.Start();
+            _timer.Start();
 
         }
 
@@ -369,5 +381,13 @@ namespace SneakingOut
 
             _timer.Start();
         }
+
+		private void _menuFilePause_Click(object sender, EventArgs e)
+		{
+            if (!isPaused)
+                _timer.Stop();
+            else
+                _timer.Start();
+		}
 	}
 }
