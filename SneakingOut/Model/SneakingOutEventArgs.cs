@@ -4,10 +4,11 @@ using System.Text;
 
 namespace SneakingOut.Model
 {
-	class SneakingOutEventArgs : EventArgs
+	public class SneakingOutEventArgs : EventArgs
 	{
 
         private Int32 _steps;
+        private Int32 _gameTime;
         private Boolean _isWon;
 
         /// <summary>
@@ -21,15 +22,20 @@ namespace SneakingOut.Model
         public Boolean IsWon { get { return _isWon; } }
 
         /// <summary>
+        /// Játékidő lekérdezése.
+        /// </summary>
+        public Int32 GameTime { get { return _gameTime; } }
+
+        /// <summary>
         /// Sudoku eseményargumentum példányosítása.
         /// </summary>
         /// <param name="isWon">Győzelem lekérdezése.</param>
         /// <param name="gameStepCount">Lépésszám.</param>
-        public SneakingOutEventArgs(Boolean isWon, Int32 gameStepCount)
+        public SneakingOutEventArgs(Boolean isWon, Int32 gameStepCount, Int32 gameTime)
         {
             _isWon = isWon;
             _steps = gameStepCount;
-   
+            _gameTime = gameTime;
         }
     }
 }

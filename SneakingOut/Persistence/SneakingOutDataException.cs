@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SneakingOut.Persistence
 {
-	class SneakingOutDataException : Exception
+	public class SneakingOutDataException : Exception
 	{
 		public SneakingOutDataException() { }
 	}

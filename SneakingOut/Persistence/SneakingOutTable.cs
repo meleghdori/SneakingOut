@@ -4,7 +4,7 @@ using System.Text;
 
 namespace SneakingOut.Persistence
 {
-	class SneakingOutTable
+	public class SneakingOutTable
 	{
         #region Fields
 
@@ -13,6 +13,7 @@ namespace SneakingOut.Persistence
         private Security SecurityOne;
         private Security SecurityTwo;
         private Int32[] Exit;
+        private Boolean isEscaped;
 
         #endregion
 
@@ -30,6 +31,17 @@ namespace SneakingOut.Persistence
         /// <param name="y">Függőleges koordináta.</param>
         /// <returns>Mező értéke.</returns>
         public Int32 this[Int32 x, Int32 y] { get { return GetValue(x, y); } }
+
+        /// <summary>
+        /// jatekos lekerdezese
+        /// </summary>
+        public Player _player { get { return Player; } set { Player = value; } }
+
+        public Security _securityOne { get { return SecurityOne; } set { SecurityOne = value; } }
+
+        public Security _securityTwo { get { return SecurityTwo; } set { SecurityTwo = value; } }
+
+        public Boolean _isEscaped { get { return isEscaped; } set { isEscaped = value; } }
 
         #endregion
 
@@ -50,8 +62,9 @@ namespace SneakingOut.Persistence
             if (tableSize < 0)
                 throw new ArgumentOutOfRangeException("The table size is less than 0.", "tableSize");
             _fieldValues = new Int32[tableSize, tableSize];
+            isEscaped = false;
 
-        }
+    }
 
         #endregion
 
@@ -124,11 +137,6 @@ namespace SneakingOut.Persistence
                 Exit[0] = x;
                 Exit[1] = y;
             }
-        }
-
-        public Boolean isEscaped() 
-        {
-            return (Player.getPositionX() == Exit[0] && Player.getPositionY() == Exit[1]);
         }
                 
 

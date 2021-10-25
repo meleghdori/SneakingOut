@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SneakingOut.Persistence
 {
-	class SneakingOutFileDataAccess : SneakingOutDataAccess
+	public class SneakingOutFileDataAccess : SneakingOutDataAccess
 	{
         /// <summary>
         /// Fájl betöltése.
