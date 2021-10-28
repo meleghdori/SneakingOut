@@ -12,6 +12,11 @@ using SneakingOut.Persistence;
 
 namespace SneakingOut
 {
+
+    public enum GameLevel { Level1, Level2, Level3 }
+
+    // meg kell csinalni a restartot, a mozgasokat a tabla frissiteset, plusz az orok meg a jatekos helyes mozgasat
+
     public partial class SneakingOut : Form
     {
         #region Fields
@@ -21,6 +26,7 @@ namespace SneakingOut
         private PictureBox[,] _pictureBoxField; // gombrács
         private Timer _timer; // időzítő
         private Boolean isPaused;
+        private GameLevel _gameLevel;
 
 
         #endregion
@@ -33,6 +39,9 @@ namespace SneakingOut
         public SneakingOut()
         {
             InitializeComponent();
+
+
+            this.KeyDown += new KeyEventHandler(this.keyDown);
         }
 
         #endregion
@@ -57,8 +66,59 @@ namespace SneakingOut
             _timer.Interval = 1000;
             _timer.Tick += new EventHandler(Timer_Tick);
 
+            _model.SecurityOneChanged += new EventHandler<Security>(SecurityOneChanged);
+            _model.SecurityTwoChanged += new EventHandler<Security>(SecurityTwoChanged);
 
+            _model.PlayerChanged += new EventHandler<Player>(PlayerChanged);
         }
+
+        private void PlayerChanged(object sender, Player player)
+        {
+            _pictureBoxField[player.getPositionX(), player.getPositionY()].Image = Properties.Resources.player1;
+            _pictureBoxField[player.getPositionX(), player.getPositionY()].SizeMode = PictureBoxSizeMode.StretchImage;
+            _pictureBoxField[player.getPositionX(), player.getPositionY()].BackColor = Color.Transparent;
+
+            if (player.getDirection() == 0)
+            {
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Enabled = true;
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BringToFront();
+            }
+            if (player.getDirection() == 1)
+            {
+                _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Enabled = true;
+                _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].BackColor = Color.Black;
+            }
+            if (player.getDirection() == 2)
+            {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Enabled = true;
+                _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].BackColor = Color.Black;
+            }
+            if (player.getDirection() == 3)
+            {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Enabled = true;
+                _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].BackColor = Color.Black;
+            }
+            
+        }
+
+        private void SecurityOneChanged(Object sender, Security securityOne)
+        {
+            _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].Image = Properties.Resources.security;
+            _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].SizeMode = PictureBoxSizeMode.StretchImage;
+            _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].BackColor = Color.Transparent;
+            _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].Enabled = true;
+        }
+
+        private void SecurityTwoChanged(Object sender, Security securityTwo)
+        {
+            _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].Image = Properties.Resources.security;
+            _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].SizeMode = PictureBoxSizeMode.StretchImage;
+            _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].BackColor = Color.Transparent;
+            _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].Enabled = true;
+        }
+
 
         #endregion
 
@@ -110,7 +170,7 @@ namespace SneakingOut
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void KeyIsDown(object sender, KeyEventArgs e)
+        private void keyDown(object sender, KeyEventArgs e)
         {
             if (!isPaused)
             {
@@ -142,14 +202,49 @@ namespace SneakingOut
         /// </summary>
         private void Timer_Tick(Object sender, EventArgs e)
         {
-            if(!isPaused)
-            _model.AdvanceTime(); // játék léptetése
+            if (!isPaused)
+            {
+                _model.AdvanceTime();
+            }// játék léptetése
         }
 
         #endregion
 
 
         #region private methods
+
+        /// <summary>
+        /// jatek inditasa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <param name="gameLevel"> melyik palyaval</param>
+        /// <param name="filename">melyik fajlbol</param>
+        private async void _startGame(object sender, EventArgs e, GameLevel gameLevel, String filename)
+        {
+            GenerateTable();
+            _model.NewGame();
+            _gameLevel = gameLevel;
+
+            try
+            {
+                // játék betöltése
+                await _model.LoadGameAsync(filename);
+                _menuFileSaveGame.Enabled = true;
+            }
+            catch (SneakingOutDataException)
+            {
+                MessageBox.Show("Loading failed!" + Environment.NewLine + "The path is incorrect or the file can't be opened!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                _model.NewGame();
+                _menuFileSaveGame.Enabled = true;
+            }
+
+            SetupTable();
+            _timer.Start();
+            isPaused = false;
+        }
+
 
         /// <summary>
         /// Új tábla létrehozása.
@@ -182,6 +277,7 @@ namespace SneakingOut
                 {
                     if (_model.Table.GetValue(i, j) == 0)
                     {
+                        _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
                         _pictureBoxField[i, j].Enabled = true;
                         _pictureBoxField[i, j].BackColor = Color.Black;
                     }
@@ -275,96 +371,23 @@ namespace SneakingOut
 
 
 		
-		private async void _menuFileLevel1_Click(object sender, EventArgs e)
+		private void _menuFileLevel1_Click(object sender, EventArgs e)
 		{
-            _model.GameLevel = GameLevel.Level1;
-
-            GenerateTable();
-            _model.NewGame();
-
-
-            try
-            {
-                // játék betöltése
-                await _model.LoadGameAsync(@"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level1.txt");
-                _menuFileSaveGame.Enabled = true;
-            }
-            catch (SneakingOutDataException)
-            {
-                MessageBox.Show("Loading failed!" + Environment.NewLine + "The path is incorrect or the file can't be written!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                _model.NewGame();
-                _menuFileSaveGame.Enabled = true;
-            }
-
-            _menuFileSaveGame.Enabled = true;
-
-           
-            SetupTable();
-
-            _timer.Start();
+            _startGame(sender, e, GameLevel.Level1, @"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level1.txt");
 
         }
 
-		private async void _menuFileLevel2_Click(object sender, EventArgs e)
+		private void _menuFileLevel2_Click(object sender, EventArgs e)
         {
-            _model.GameLevel = GameLevel.Level2;
-
-            Boolean restartTimer = _timer.Enabled;
-            _timer.Stop();
-
-            try
-            {
-                // játék betöltése
-                await _model.LoadGameAsync(@"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level2.txt");
-                _menuFileSaveGame.Enabled = true;
-            }
-            catch (SneakingOutDataException)
-            {
-                MessageBox.Show("Loading failed!" + Environment.NewLine + "The path is incorrect or the file can't be written!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                _model.NewGame();
-                _menuFileSaveGame.Enabled = true;
-            }
-
-
-            GenerateTable();
-            _model.NewGame();
-            SetupTable();
-
-            if (restartTimer)
-                _timer.Start();
+            _startGame(sender, e, GameLevel.Level2, @"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level2.txt");
         }
 
-		private async void _menuFileLevel3_Click(object sender, EventArgs e)
+		private void _menuFileLevel3_Click(object sender, EventArgs e)
 		{
-            _model.GameLevel = GameLevel.Level3;
-
-            Boolean restartTimer = _timer.Enabled;
-            _timer.Stop();
-
-            try
-            {
-                // játék betöltése
-                await _model.LoadGameAsync(@"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level3.txt");
-                _menuFileSaveGame.Enabled = true;
-            }
-            catch (SneakingOutDataException)
-            {
-                MessageBox.Show("Loading failed!" + Environment.NewLine + "The path is incorrect or the file can't be opened!", "Error!", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-                _model.NewGame();
-                _menuFileSaveGame.Enabled = true;
-            }
-
-            GenerateTable();
-            _model.NewGame();
-            SetupTable();
-
-            if (restartTimer)
-                _timer.Start();
+            _startGame(sender, e, GameLevel.Level3, @"C:\Digitalis oktatas\2021-2\eva\SneakingOut\SneakingOut\level3.txt");
         }
 
+        
 		#endregion
 
         /// <summary>
@@ -374,20 +397,32 @@ namespace SneakingOut
         /// <param name="e"></param>
 		private void restartGameToolStripMenuItem_Click(object sender, EventArgs e)
 		{
-            _menuFileSaveGame.Enabled = true;
-
-            _model.NewGame();
-            SetupTable();
-
-            _timer.Start();
+            if (_gameLevel == GameLevel.Level1)
+            {
+                _menuFileLevel1_Click(sender, e);
+            }
+            if (_gameLevel == GameLevel.Level2)
+            {
+                _menuFileLevel2_Click(sender, e);
+            }
+            if (_gameLevel == GameLevel.Level3)
+            {
+                _menuFileLevel3_Click(sender, e);
+            }
         }
 
 		private void _menuFilePause_Click(object sender, EventArgs e)
 		{
             if (!isPaused)
+            {
+                isPaused = true;
                 _timer.Stop();
-            else
+            }
+            else if (isPaused)
+            {
+                isPaused = false;
                 _timer.Start();
+            }
 		}
 	}
 }

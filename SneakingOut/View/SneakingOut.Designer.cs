@@ -38,6 +38,7 @@ namespace SneakingOut
 			this._menuFIleRestartGame = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFileSaveGame = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuFileExit = new System.Windows.Forms.ToolStripMenuItem();
+			this._menuFilePause = new System.Windows.Forms.ToolStripMenuItem();
 			this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
 			this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
 			this._statusStrip = new System.Windows.Forms.StatusStrip();
@@ -45,7 +46,6 @@ namespace SneakingOut
 			this._toolLabelGameSteps = new System.Windows.Forms.ToolStripStatusLabel();
 			this._toolLabel2 = new System.Windows.Forms.ToolStripStatusLabel();
 			this._toolLabelGameTime = new System.Windows.Forms.ToolStripStatusLabel();
-			this._menuFilePause = new System.Windows.Forms.ToolStripMenuItem();
 			this._menuStrip.SuspendLayout();
 			this._statusStrip.SuspendLayout();
 			this.SuspendLayout();
@@ -79,7 +79,7 @@ namespace SneakingOut
             this._menuFileLevel2,
             this._menuFileLevel3});
 			this._menuFileNewGame.Name = "_menuFileNewGame";
-			this._menuFileNewGame.Size = new System.Drawing.Size(180, 22);
+			this._menuFileNewGame.Size = new System.Drawing.Size(132, 22);
 			this._menuFileNewGame.Text = "New Game";
 			// 
 			// _menuFileLevel1
@@ -106,23 +106,30 @@ namespace SneakingOut
 			// _menuFIleRestartGame
 			// 
 			this._menuFIleRestartGame.Name = "_menuFIleRestartGame";
-			this._menuFIleRestartGame.Size = new System.Drawing.Size(180, 22);
+			this._menuFIleRestartGame.Size = new System.Drawing.Size(132, 22);
 			this._menuFIleRestartGame.Text = "Restart";
 			this._menuFIleRestartGame.Click += new System.EventHandler(this.restartGameToolStripMenuItem_Click);
 			// 
 			// _menuFileSaveGame
 			// 
 			this._menuFileSaveGame.Name = "_menuFileSaveGame";
-			this._menuFileSaveGame.Size = new System.Drawing.Size(180, 22);
+			this._menuFileSaveGame.Size = new System.Drawing.Size(132, 22);
 			this._menuFileSaveGame.Text = "Save";
 			this._menuFileSaveGame.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
 			// 
 			// _menuFileExit
 			// 
 			this._menuFileExit.Name = "_menuFileExit";
-			this._menuFileExit.Size = new System.Drawing.Size(180, 22);
+			this._menuFileExit.Size = new System.Drawing.Size(132, 22);
 			this._menuFileExit.Text = "Exit";
 			this._menuFileExit.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+			// 
+			// _menuFilePause
+			// 
+			this._menuFilePause.Name = "_menuFilePause";
+			this._menuFilePause.Size = new System.Drawing.Size(132, 22);
+			this._menuFilePause.Text = "Pause";
+			this._menuFilePause.Click += new System.EventHandler(this._menuFilePause_Click);
 			// 
 			// _openFileDialog
 			// 
@@ -176,13 +183,6 @@ namespace SneakingOut
 			this._toolLabelGameTime.Size = new System.Drawing.Size(43, 17);
 			this._toolLabelGameTime.Text = "0:00:00";
 			// 
-			// _menuFilePause
-			// 
-			this._menuFilePause.Name = "_menuFilePause";
-			this._menuFilePause.Size = new System.Drawing.Size(180, 22);
-			this._menuFilePause.Text = "Pause";
-			this._menuFilePause.Click += new System.EventHandler(this._menuFilePause_Click);
-			// 
 			// SneakingOut
 			// 
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Inherit;
@@ -197,7 +197,6 @@ namespace SneakingOut
 			this.Name = "SneakingOut";
 			this.Text = "Sneak Out the game";
 			this.Load += new System.EventHandler(this.SneakOut_Load);
-			this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.KeyIsDown);
 			this._menuStrip.ResumeLayout(false);
 			this._menuStrip.PerformLayout();
 			this._statusStrip.ResumeLayout(false);

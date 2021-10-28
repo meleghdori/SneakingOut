@@ -43,6 +43,8 @@ namespace SneakingOut.Persistence
 
         public Boolean _isEscaped { get { return isEscaped; } set { isEscaped = value; } }
 
+        public Int32[] _Exit { get { return Exit; } set { Exit = value; } } 
+
         #endregion
 
         #region Constructors
@@ -95,7 +97,7 @@ namespace SneakingOut.Persistence
         /// <returns>A mező értéke.</returns>
         public Int32 GetValue(Int32 x, Int32 y)
         {
-            if (x < 0 || x > _fieldValues.GetLength(0))
+            if (x < 0 || x  > _fieldValues.GetLength(0))
                 throw new ArgumentOutOfRangeException("x", "The X coordinate is out of range.");
             if (y < 0 || y > _fieldValues.GetLength(1))
                 throw new ArgumentOutOfRangeException("y", "The Y coordinate is out of range.");

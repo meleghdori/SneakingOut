@@ -17,9 +17,9 @@ namespace SneakingOut.Persistence
 		{
 			TablePositionX = tablePositionX;
 			TablePositionY = tablePositionY;
-			Up = true;
-			Down = true;
-			Right = true;
+			Up = false;
+			Down = false;
+			Right = false;
 			Left = true;
 		}
 
@@ -53,10 +53,10 @@ namespace SneakingOut.Persistence
 
 		public void setDirection(Int32 direction)
 		{
-			if (direction == 0) { Up = true; }
-			if (direction == 1) { Down = true; }
-			if (direction == 2) { Right = true; }
-			if (direction == 3) { Left = true; }
+			if (direction == 0) { Up = true; Down = false; Right = false; Left = false; }
+			if (direction == 1) { Down = true; Up = false; Right = false; Left = false; }
+			if (direction == 2) { Right = true; Up = false; Down = false; Left = false; }
+			if (direction == 3) { Left = true; Up = false; Down = false; Right = false; }
 		}
 	}
 }

@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using System.Threading.Tasks;
 using SneakingOut.Persistence;
 
 namespace SneakingOut.Model
 {
-	public enum GameLevel { Level1, Level2, Level3 }
 
 	/// <summary>
 	/// Lopakodo jatektipusa
@@ -18,11 +18,14 @@ namespace SneakingOut.Model
 
 		private SneakingOutDataAccess _dataAccess; // adatelérés
 		private SneakingOutTable _table; // játéktábla
-		private GameLevel _gameLevel;
 		private Int32 _gameStepCount; // lépések száma
 		private Int32 _gameTime;
+		private Boolean _gotCaught;
+
 
 		#endregion
+
+		
 
 		#region Properties 
 
@@ -47,11 +50,6 @@ namespace SneakingOut.Model
 		// vege ha egymashozertek public
 		Boolean IsGameOver { get { return (_table._isEscaped); } }
 
-		/// <summary>
-		/// Játéknehézség lekérdezése, vagy beállítása.
-		/// </summary>
-		public GameLevel GameLevel { get { return _gameLevel; } set { _gameLevel = value; } }
-
 
 		#endregion
 
@@ -67,6 +65,19 @@ namespace SneakingOut.Model
 		/// </summary>
 		public event EventHandler<SneakingOutEventArgs> GameOver;
 
+		/// <summary>
+		/// or1 mozagatasa
+		/// </summary>
+		public event EventHandler<Security> SecurityOneChanged;
+
+		/// <summary>
+		/// or2 mozgatasa
+		/// </summary>
+		public event EventHandler<Security> SecurityTwoChanged;
+
+		public event EventHandler<Player> PlayerChanged;
+
+
 		#endregion
 
 		#region Constructor 
@@ -79,7 +90,6 @@ namespace SneakingOut.Model
 		{
 			_dataAccess = dataAccess;
 			_table = new SneakingOutTable();
-			_gameLevel = GameLevel.Level1;
 		}
 
 		#endregion
@@ -88,17 +98,9 @@ namespace SneakingOut.Model
 
 		public void NewGame() 
 		{
+			_gotCaught = false;
 			_table = new SneakingOutTable();
 			_gameStepCount = 0;
-			switch (_gameLevel)
-			{
-				case GameLevel.Level1:
-					break;
-				case GameLevel.Level2:
-					break;
-				case GameLevel.Level3:
-					break;
-			}
 		}
 
 		/// <summary>
@@ -106,22 +108,53 @@ namespace SneakingOut.Model
 		/// </summary>
 		public void AdvanceTime()
 		{
-			if (IsGameOver) // ha már vége, nem folytathatjuk
-				return;
+			if (!_gotCaught && !_table._isEscaped)
+			{
+				if (IsGameOver) // ha már vége, nem folytathatjuk
+					return;
 
-			_gameTime++;
-			OnGameAdvanced();
-			EverythingMoves();
+				PlayerChanged?.Invoke(this, (_table._player));
+
+				_gameTime++;
+				OnGameAdvanced();
+				EverythingMoves();
+				isGettingCaught();
+				Wins();
+			}
+			else if (_gotCaught)
+			{
+				OnGameOver(false);
+			}
+			else if (_table._isEscaped)
+			{
+				OnGameOver(true);
+			}
+			
+
+		}
+		/// <summary>
+		/// ha az exitnel van akk nyer
+		/// </summary>
+		public void Wins()
+		{
+			if (_table._player.getPositionX() == _table._Exit[0] && _table._player.getPositionY() == _table._Exit[1])
+			{
+				_table._isEscaped = true;
+			}
 		}
 
+		/// <summary>
+		/// minden or mozogjon
+		/// </summary>
 		public void EverythingMoves()
 		{
 			if (IsGameOver) // ha már vége, nem folytathatjuk
 				return;
 
-			SecurityMove(_table._securityOne, 0);
-			SecurityMove(_table._securityTwo, 3);
-
+			SecurityMove(_table._securityOne, _table._securityOne.getDirection() );
+			SecurityOneChanged?.Invoke(this,(_table._securityOne));
+			SecurityMove(_table._securityTwo, _table._securityTwo.getDirection() );
+			SecurityTwoChanged?.Invoke(this,_table._securityTwo);// ha nem null akk hivodik meg
 
 		}
 
@@ -139,11 +172,13 @@ namespace SneakingOut.Model
 
 			if (direction == 0)
 			{
-				if (sec.getPositionY() + 1 <= 30 && _table[sec.getPositionX(), sec.getPositionY() + 1] == 0)
-				{ 
-					sec.setPositionY(sec.getPositionY() + 1);
+				if (sec.getPositionX() - 1 > 0 && _table[sec.getPositionX() - 1, sec.getPositionY()] == 0)
+				{
+					_table.SetValue(sec.getPositionX(), sec.getPositionY(), 0);
+					sec.setDirection(direction);
+					sec.setPositionX(sec.getPositionX() - 1);
 				}
-				else if (_table[sec.getPositionX(), sec.getPositionY() + 1] == 4 || sec.getPositionY() + 1 > 30)
+				else if (sec.getPositionX() - 1 < 0 || _table[sec.getPositionX() - 1, sec.getPositionY()] == 4 || _table[sec.getPositionX() - 1, sec.getPositionY()] == 5)
 				{
 					SecurityMove(sec, change);
 				}
@@ -151,11 +186,13 @@ namespace SneakingOut.Model
 
 			if (direction == 1)
 			{
-				if (sec.getPositionY() - 1 >= 0 && _table[sec.getPositionX(), sec.getPositionY() - 1] == 0)
+				if (sec.getPositionX() + 1 < 10 && _table[sec.getPositionX() + 1, sec.getPositionY()] == 0)
 				{
-					sec.setPositionY(sec.getPositionY() - 1);
+					_table.SetValue(sec.getPositionX(), sec.getPositionY(), 0);
+					sec.setDirection(direction);
+					sec.setPositionX(sec.getPositionX() + 1);
 				}
-				else if (_table[sec.getPositionX(), sec.getPositionY() - 1] == 4 || sec.getPositionY() - 1 < 0)
+				else if (sec.getPositionX() + 1 >= 10 || _table[sec.getPositionX() + 1, sec.getPositionY()] == 4 || _table[sec.getPositionX() + 1, sec.getPositionY()] == 5)
 				{
 					SecurityMove(sec, change);
 				}
@@ -164,11 +201,13 @@ namespace SneakingOut.Model
 
 			if (direction == 2)
 			{
-				if (sec.getPositionX() + 1 <= 30 && _table[sec.getPositionX() + 1, sec.getPositionY()] == 0)
+				if (sec.getPositionY() + 1 < 10 && _table[sec.getPositionX(), sec.getPositionY() + 1] == 0)
 				{
-					sec.setPositionX(sec.getPositionX() + 1 );
+					_table.SetValue(sec.getPositionX(), sec.getPositionY(), 0);
+					sec.setDirection(direction);
+					sec.setPositionY(sec.getPositionY() + 1);
 				}
-				else if (_table[sec.getPositionX() + 1, sec.getPositionY()] == 4 || sec.getPositionX() + 1 > 30)
+				else if (sec.getPositionY() + 1 >= 10 || _table[sec.getPositionX(), sec.getPositionY() + 1] == 4 || _table[sec.getPositionX(), sec.getPositionY() + 1] == 5)
 				{
 					SecurityMove(sec, change);
 				}
@@ -176,11 +215,13 @@ namespace SneakingOut.Model
 
 			if (direction == 3)
 			{
-				if (sec.getPositionX() - 1 >= 0 && _table[sec.getPositionX() - 1, sec.getPositionY()] == 0)
+				if (sec.getPositionY() - 1 >= 0 && _table[sec.getPositionX(), sec.getPositionY() - 1] == 0)
 				{
-					sec.setPositionY(sec.getPositionY() + 1);
+					_table.SetValue(sec.getPositionX(), sec.getPositionY(), 0);
+					sec.setDirection(direction);
+					sec.setPositionY(sec.getPositionY() - 1);
 				}
-				else if (_table[sec.getPositionX() - 1, sec.getPositionY()] == 4 || sec.getPositionX() - 1 < 0)
+				else if (sec.getPositionY() - 1 < 0 || _table[sec.getPositionX(), sec.getPositionY() - 1] == 4 || _table[sec.getPositionX(), sec.getPositionY() - 1] == 5)
 				{
 					SecurityMove(sec, change);
 				}
@@ -195,40 +236,70 @@ namespace SneakingOut.Model
 		/// <returns></returns>
 		public void PlayerMove(Player player, Int32 direction)
 		{
-
-			//if (IsGameOver) // ha már vége a játéknak, nem játszhatunk
-			//return;
-			//if (_table.GetValue(x, y) == 4) // ha a mező zárolva van, nem 
+			if (IsGameOver) // ha már vége a játéknak, nem játszhatunk
+			return;
 
 			if (direction == 0)
 			{
-				if (player.getPositionY() + 1 <= 30 && _table[player.getPositionX(), player.getPositionY() + 1] == 0)
+				if (player.getPositionX() - 1 >= 0 && _table[player.getPositionX() - 1, player.getPositionY()] == 0 || _table[player.getPositionX() - 1, player.getPositionY()] == 5)
 				{
-					player.setPositionY(player.getPositionY() + 1);
+					_table.SetValue(player.getPositionX(), player.getPositionY(), 0);
+					player.setPositionX(player.getPositionX() - 1);
+					player.setDirection(direction);
+					_gameStepCount++;
 				}
+			
 			}
 
 			if (direction == 1)
 			{
-				if (player.getPositionY() - 1 >= 0 && _table[player.getPositionX(), player.getPositionY() - 1] == 0)
+				if (player.getPositionX() + 1 < 10 && _table[player.getPositionX() + 1, player.getPositionY()] == 0 || _table[player.getPositionX() + 1, player.getPositionY()] == 5)
 				{
-					player.setPositionY(player.getPositionY() - 1);
+					_table.SetValue(player.getPositionX(), player.getPositionY(), 0);
+					player.setPositionX(player.getPositionX() + 1);
+					player.setDirection(direction);
+					_gameStepCount++;
 				}
 			}
 
 			if (direction == 2)
 			{
-				if (player.getPositionX() + 1 <= 30 && _table[player.getPositionX() + 1, player.getPositionY()] == 0)
+				if (player.getPositionY() + 1 < 10 && _table[player.getPositionX(), player.getPositionY() + 1] == 0 || _table[player.getPositionX(), player.getPositionY() + 1] == 5)
 				{
-					player.setPositionX(player.getPositionX() + 1);
-				}
+					_table.SetValue(player.getPositionX(), player.getPositionY(), 0);
+					player.setPositionY(player.getPositionY() + 1);
+					player.setDirection(direction);
+					_gameStepCount++;
+				}	
 			}
 
 			if (direction == 3)
 			{
-				if (player.getPositionX() - 1 >= 0 && _table[player.getPositionX() - 1, player.getPositionY()] == 0)
+				if (player.getPositionY() - 1 >= 0 && _table[player.getPositionX(), player.getPositionY() - 1] == 0 || _table[player.getPositionX(), player.getPositionY() - 1] == 5)
 				{
-					player.setPositionX(player.getPositionX() - 1);
+					_table.SetValue(player.getPositionX(), player.getPositionY(), 0);
+					player.setPositionY(player.getPositionY() - 1);
+					player.setDirection(direction);
+					_gameStepCount++;
+				}
+			}
+		}
+
+
+		/// <summary>
+		/// ha elkapjak akk vege
+		/// </summary>
+		public void isGettingCaught()
+		{
+			for (int i = 1; i < 3; i++)
+			{
+				for (int j = 1; j < 3; j++)
+				{
+					if ((_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
+						|| (_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j) 
+						|| (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
+						|| (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j) )
+						_gotCaught = true;
 				}
 			}
 		}
