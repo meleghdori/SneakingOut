@@ -88,7 +88,8 @@ namespace SneakingOut
             {
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Enabled = true;
-                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;            }
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;            
+            }
             if (player.getDirection() == 1)
             {
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Image = Properties.Resources.black;

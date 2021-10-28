@@ -172,7 +172,7 @@ namespace SneakingOut.Model
 
 			if (direction == 0)
 			{
-				if (sec.getPositionX() - 1 > 0 && _table[sec.getPositionX() - 1, sec.getPositionY()] == 0)
+				if (sec.getPositionX() - 1 >= 0 && _table[sec.getPositionX() - 1, sec.getPositionY()] == 0)
 				{
 					_table.SetValue(sec.getPositionX(), sec.getPositionY(), 0);
 					sec.setDirection(direction);
@@ -291,9 +291,9 @@ namespace SneakingOut.Model
 		/// </summary>
 		public void isGettingCaught()
 		{
-			for (int i = 0; i < 2; i++)
+			for (int i = 0; i < 3; i++)
 			{
-				for (int j = 0; j < 2; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					if (_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
 					{
