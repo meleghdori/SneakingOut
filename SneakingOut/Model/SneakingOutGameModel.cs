@@ -116,9 +116,9 @@ namespace SneakingOut.Model
 				PlayerChanged?.Invoke(this, (_table._player));
 
 				_gameTime++;
+				isGettingCaught();
 				OnGameAdvanced();
 				EverythingMoves();
-				isGettingCaught();
 				Wins();
 			}
 			else if (_gotCaught)
@@ -152,7 +152,7 @@ namespace SneakingOut.Model
 				return;
 
 			SecurityMove(_table._securityOne, _table._securityOne.getDirection() );
-			SecurityOneChanged?.Invoke(this,(_table._securityOne));
+			SecurityOneChanged?.Invoke(this, _table._securityOne);
 			SecurityMove(_table._securityTwo, _table._securityTwo.getDirection() );
 			SecurityTwoChanged?.Invoke(this,_table._securityTwo);// ha nem null akk hivodik meg
 
@@ -291,15 +291,42 @@ namespace SneakingOut.Model
 		/// </summary>
 		public void isGettingCaught()
 		{
-			for (int i = 1; i < 3; i++)
+			for (int i = 0; i < 2; i++)
 			{
-				for (int j = 1; j < 3; j++)
+				for (int j = 0; j < 2; j++)
 				{
-					if ((_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
-						|| (_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j) 
-						|| (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
-						|| (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j) )
+					if (_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
+					{
 						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
+					{
+						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
+					{
+						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
+					{
+						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j)
+					{
+						_gotCaught = true;
+					}
+					if(_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j)
+					{
+						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j)
+					{
+						_gotCaught = true;
+					}
+					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j)
+					{
+						_gotCaught = true;
+					}
 				}
 			}
 		}

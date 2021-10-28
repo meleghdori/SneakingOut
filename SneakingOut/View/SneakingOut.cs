@@ -40,9 +40,10 @@ namespace SneakingOut
         {
             InitializeComponent();
 
-
             this.KeyDown += new KeyEventHandler(this.keyDown);
         }
+
+        
 
         #endregion
 
@@ -72,6 +73,11 @@ namespace SneakingOut
             _model.PlayerChanged += new EventHandler<Player>(PlayerChanged);
         }
 
+        /// <summary>
+        /// a jatekos mezojenek valtozasa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="player"></param>
         private void PlayerChanged(object sender, Player player)
         {
             _pictureBoxField[player.getPositionX(), player.getPositionY()].Image = Properties.Resources.player1;
@@ -82,41 +88,89 @@ namespace SneakingOut
             {
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Enabled = true;
-                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;
-                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BringToFront();
-            }
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;            }
             if (player.getDirection() == 1)
             {
+                _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Enabled = true;
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].BackColor = Color.Black;
             }
             if (player.getDirection() == 2)
             {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Enabled = true;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].BackColor = Color.Black;
             }
             if (player.getDirection() == 3)
             {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Enabled = true;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].BackColor = Color.Black;
             }
             
         }
 
+        /// <summary>
+        /// az or1 helyenek valtozasa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="securityOne"></param>
         private void SecurityOneChanged(Object sender, Security securityOne)
         {
             _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].Image = Properties.Resources.security;
             _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].SizeMode = PictureBoxSizeMode.StretchImage;
             _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].BackColor = Color.Transparent;
             _pictureBoxField[securityOne.getPositionX(), securityOne.getPositionY()].Enabled = true;
+
+            EmptyFields(securityOne);
         }
 
+
+        /// <summary>
+        /// a or2 mozgasnak valtozasa
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="securityTwo"></param>
         private void SecurityTwoChanged(Object sender, Security securityTwo)
         {
             _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].Image = Properties.Resources.security;
             _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].SizeMode = PictureBoxSizeMode.StretchImage;
             _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].BackColor = Color.Transparent;
             _pictureBoxField[securityTwo.getPositionX(), securityTwo.getPositionY()].Enabled = true;
+
+            EmptyFields(securityTwo);
+        }
+
+        /// <summary>
+        /// ha ellepett onnan az or akk ujra ures mezo
+        /// </summary>
+        /// <param name="security"></param>
+        private void EmptyFields(Security security)
+        {
+            if (security.getDirection() == 0)
+            {
+                _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].Image = Properties.Resources.black;
+                _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].Enabled = true;
+                _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].BackColor = Color.Black;
+            }
+            if (security.getDirection() == 1)
+            {
+                _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].Image = Properties.Resources.black;
+                _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].Enabled = true;
+                _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].BackColor = Color.Black;
+            }
+            if (security.getDirection() == 2)
+            {
+                _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].Image = Properties.Resources.black;
+                _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].Enabled = true;
+                _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].BackColor = Color.Black;
+            }
+            if (security.getDirection() == 3)
+            {
+                _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].Image = Properties.Resources.black;
+                _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].Enabled = true;
+                _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].BackColor = Color.Black;
+            }
         }
 
 
@@ -261,6 +315,7 @@ namespace SneakingOut
                     _pictureBoxField[i, j].Enabled = false; // kikapcsolt állapot
                     _pictureBoxField[i, j].TabIndex = 100 + i * _model.Table.Size + j; // a gomb számát a TabIndex-ben tároljuk
                     _pictureBoxField[i, j].BorderStyle = BorderStyle.Fixed3D; // lapított stípus
+                    
 
                     Controls.Add(_pictureBoxField[i, j]);
                 }
@@ -275,9 +330,10 @@ namespace SneakingOut
             {
                 for (Int32 j = 0; j < _model.Table.Size; j++)
                 {
+                    _pictureBoxField[i, j].BringToFront();
                     if (_model.Table.GetValue(i, j) == 0)
                     {
-                        _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
+                        _pictureBoxField[i,j].Image = Properties.Resources.black;
                         _pictureBoxField[i, j].Enabled = true;
                         _pictureBoxField[i, j].BackColor = Color.Black;
                     }
