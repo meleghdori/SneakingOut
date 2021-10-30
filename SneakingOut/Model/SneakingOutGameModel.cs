@@ -297,34 +297,122 @@ namespace SneakingOut.Model
 				{
 					if (_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityOne.getPositionX() + k, _table._securityOne.getPositionY() + l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityOne.getPositionX() + i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityOne.getPositionX() + k, _table._securityOne.getPositionY() - l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() + j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityOne.getPositionX() - k, _table._securityOne.getPositionY() + l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityOne.getPositionX() - i && _table._player.getPositionY() == _table._securityOne.getPositionY() - j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityOne.getPositionX() - k, _table._securityOne.getPositionY() - l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityTwo.getPositionX() + k, _table._securityTwo.getPositionY() + l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if(_table._player.getPositionX() == _table._securityTwo.getPositionX() + i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityTwo.getPositionX() + k, _table._securityTwo.getPositionY() - l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() + j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityTwo.getPositionX() - k, _table._securityTwo.getPositionY() + l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 					if (_table._player.getPositionX() == _table._securityTwo.getPositionX() - i && _table._player.getPositionY() == _table._securityTwo.getPositionY() - j)
 					{
+						for (int k = 0; k < 2; k++)
+						{
+							for (int l = 0; l < 2; l++)
+							{
+								if (_table[_table._securityTwo.getPositionX() - k, _table._securityTwo.getPositionY() - l] == 4)
+								{
+									_gotCaught = false;
+									return;
+								}
+							}
+						}
 						_gotCaught = true;
 					}
 				}

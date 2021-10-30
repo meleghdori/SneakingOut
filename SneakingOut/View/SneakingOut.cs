@@ -86,24 +86,28 @@ namespace SneakingOut
 
             if (player.getDirection() == 0)
             {
+                _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image.Dispose();
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].Enabled = true;
                 _pictureBoxField[player.getPositionX() + 1, player.getPositionY()].BackColor = Color.Black;            
             }
             if (player.getDirection() == 1)
             {
+                _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Image.Dispose();
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].Enabled = true;
                 _pictureBoxField[player.getPositionX() - 1, player.getPositionY()].BackColor = Color.Black;
             }
             if (player.getDirection() == 2)
             {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Image.Dispose();
                 _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].Enabled = true;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() - 1].BackColor = Color.Black;
             }
             if (player.getDirection() == 3)
             {
+                _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Image.Dispose();
                 _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Image = Properties.Resources.black;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].Enabled = true;
                 _pictureBoxField[player.getPositionX(), player.getPositionY() + 1].BackColor = Color.Black;
@@ -150,24 +154,28 @@ namespace SneakingOut
         {
             if (security.getDirection() == 0)
             {
+                _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].Image.Dispose();
                 _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].Enabled = true;
                 _pictureBoxField[security.getPositionX() + 1, security.getPositionY()].BackColor = Color.Black;
             }
             if (security.getDirection() == 1)
             {
+                _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].Image.Dispose();
                 _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].Image = Properties.Resources.black;
                 _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].Enabled = true;
                 _pictureBoxField[security.getPositionX() - 1, security.getPositionY()].BackColor = Color.Black;
             }
             if (security.getDirection() == 2)
             {
+                _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].Image.Dispose();
                 _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].Image = Properties.Resources.black;
                 _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].Enabled = true;
                 _pictureBoxField[security.getPositionX(), security.getPositionY() - 1].BackColor = Color.Black;
             }
             if (security.getDirection() == 3)
             {
+                _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].Image.Dispose();
                 _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].Image = Properties.Resources.black;
                 _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].Enabled = true;
                 _pictureBoxField[security.getPositionX(), security.getPositionY() + 1].BackColor = Color.Black;
